@@ -12,6 +12,7 @@ public class Song {
     private boolean songStatus;
 
     public Song() {
+        // khi tạo 1 đối tượng không tham số thuộc tính createdDate sẽ được gán mặc định là thời gian hiện tai
         this.createdDate = new Date();
     }
 
@@ -78,9 +79,11 @@ public class Song {
         System.out.println("Nhap ten bai hat");
         this.songName = scanner.nextLine();
 
-        // chon singer
+        // Chon singer cho song
+        // kiểm tra danh sách ca sỹ có ca sỹ ko ,
+        // nếu trống thì phải nhập 1 ca sỹ trước khi chọn singer cho song
         if (coutSinger == 0){
-            System.out.println("Danh sach ca sy trong moi nha ca su truoc");
+            System.out.println("Danh sach ca sy trong moi nhap ca sy: ");
             Singer singer1 = new Singer();
             singer1.inputData(scanner,singers,coutSinger);
             singers[coutSinger] = singer1;

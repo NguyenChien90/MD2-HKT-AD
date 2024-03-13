@@ -10,10 +10,10 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
 
     private static Singer[] singers = new Singer[100];
-    private static int countSinger = 5;// bien de kiem soat so luong ca sy da tao va nhap thong tin
+    private static int countSinger = 5;// bien de kiem soat so luong ca sy da tao va nhap thong tin trong mảng singers
 
-    // taoj cac
-    static {
+
+    static {  // tạo 5 đối tượng ca sỹ có đủ thông tin và gán cho các phần tử đầu trong mảng singers
         singers[0] = new Singer(1, "Dan Truong", 20, "Viet nam", true, "Nhac Tre, Nhac Vang");
         singers[1] = new Singer(2, "Cam LY", 218, "Viet nam", true, "Nhac cach man");
         singers[2] = new Singer(3, "Quynh Anh", 19, "Viet nam", true, "Nhac dam ma");
@@ -23,9 +23,9 @@ public class Main {
 
 
     private static Song[] songs = new Song[100];
-    private static int countSong = 5;// bien de kiem soat so luong bai hat da tao va nhap thong tin
+    private static int countSong = 5;// bien de kiem soat so luong bai hat da tao va nhap thong tin trong mang songs
 
-    static {
+    static { // tạo 5 đối tượng bài hát có đủ thông tin và gán cho các phần tử đầu trong mảng songs
         songs[0] = new Song("S001", "Tinh khuc vang", singers[0], "Tac gia", new Date(), true);
         songs[1] = new Song("S002", "Tinh Don Phuong", singers[0], "Tac gia", new Date(), true);
         songs[2] = new Song("S003", "Mot con vit", singers[2], "Tac gia", new Date(), true);
@@ -114,12 +114,14 @@ public class Main {
         System.out.println("Moi nhap id ca sy muon xoa");
         int idDelete = Integer.parseInt(scanner.nextLine());
         // kiem tra ca sy co bai hat theo idDelete cua singer vua nhap khong
+        // neu ca sy dang co bai hat thi thong bao và return thông báo và dừng việc xóa
         for (int i = 0; i < countSong; i++) {
             if (idDelete == songs[i].getSinger().getSingerId()) {
                 System.out.println("Ca sy ton tai bai hat khong xoa duoc");
                 return;
             }
         }
+        // khi thõa mãn ca sỹ không có bài hát nào thì tiếp tục
         // kiem tra id vua nhap de xoa ca sy
         boolean check = false;
         for (int i = 0; i < countSinger; i++) {
@@ -209,15 +211,17 @@ public class Main {
         int n = Integer.parseInt(scanner.nextLine());
         for (int i = 0; i < n; i++) {
             System.out.println("Bai hat thu" + (i + 1) + " : ");
+            // cách 1
 //            Song song = new Song();
 //            song.inputData(scanner,singers,countSinger);
-//            songs[i] = song;
+//            songs[countSong] = song;
+//            countSong++;
+
+            // cách 2
             songs[countSong] = new Song();
             songs[countSong].inputData(scanner, singers, countSinger);
             countSong++;
         }
-
-
     }
 
     public static void menuSearch(Scanner scanner) {
@@ -257,6 +261,7 @@ public class Main {
     }
 
     private static void top10NewSong(Scanner scanner) {
+        // sắp xếp bài hát theo thời gian tao mới nhất (CreatedDate giảm dần)
         for (int i = 0; i < countSong - 1; i++) {
             for (int j = i + 1; j < countSong; j++) {
                 if (songs[i].getCreatedDate().compareTo(songs[j].getCreatedDate()) < 0) {
@@ -266,8 +271,8 @@ public class Main {
                 }
             }
         }
-        // hien thi 10 bia hat moi nhat
-        System.out.println("Danh sach bai hat sau khi sap xep theo ten");
+        // hien thi 10 bai hat moi nhat
+        System.out.println("Top 10 bài hát mới nhất: ");
         for (int i = 0; i < 3; i++) {
             if (songs[i] != null) {
                 System.out.println(songs[i]);
@@ -276,6 +281,7 @@ public class Main {
     }
 
     private static void sortSongByName(Scanner scanner) {
+        // sắp xếp danh sách theo tên tăng dần (a-z)
         for (int i = 0; i < countSong - 1; i++) {
             for (int j = i + 1; j < countSong; j++) {
                 if (songs[i].getSongName().compareTo(songs[j].getSongName()) > 0) {
@@ -285,6 +291,7 @@ public class Main {
                 }
             }
         }
+        // hiển thị danh sách sau khi sắp xếp
         System.out.println("Danh sach bai hat sau khi sap xep theo ten");
         for (int i = 0; i < countSong; i++) {
             System.out.println(songs[i]);
@@ -296,18 +303,18 @@ public class Main {
         System.out.println("Moi nhap tu khoa tim kiem");
         String searchSong = scanner.nextLine();
         System.out.println("DANH SACH TIM KIEM THEO TU KHOA: " + searchSong);
-        int n = 0;
+        boolean check = true;
         for (int i = 0; i < countSong; i++) {
-            if (singers[i].getSingerName().toLowerCase().contains(searchSong.toLowerCase()) ||
-                    singers[i].getGenre().toLowerCase().contains(searchSong.toLowerCase())) {
+            //  hiển thị những bài hát có tên ca sỹ hoặc thể loai chứa từ khóa tìm kiếm
+            if (songs[i].getSinger().getSingerName().toLowerCase().contains(searchSong.toLowerCase()) ||
+                    songs[i].getSinger().getGenre().toLowerCase().contains(searchSong.toLowerCase())) {
                 System.out.println(songs[i]);
-                n = 1;
+                check = false;
             }
         }
-        if (n == 0) {
+        if (check) {
             System.out.println("Khong ton tai bai hat theo ye cau can tim kiem");
         }
-
     }
 }
 

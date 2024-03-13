@@ -74,6 +74,7 @@ public class Singer {
     }
 
     public void inputData(Scanner scanner, Singer[] singers , int countSinger){
+        // Id tự tăng bằng cách gọi phương thức getNewId()
         this.singerId = getNewId(singers,countSinger);
 
         System.out.println("Nhap ten: ");
@@ -100,6 +101,7 @@ public class Singer {
                 " -  Genre: " + genre ;
     }
 
+    // Phương thức trả về 1 số nguyên = singerId max + 1
     public int getNewId(Singer[] singers, int countSinger){
         if (countSinger == 0 ){
             return 1;
